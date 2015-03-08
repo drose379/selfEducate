@@ -15,13 +15,17 @@ class mySubjectsGrabber {
 	}
 
 	public function getSubjectInfo($IDarray) {
-		$connection = $this->getConnection();
-		$stmt = $connection->prepare("SELECT name,start_date,lesson_count FROM subject");
-		$stmt->execute($IDarray);
 		$masterArray = [];
-		while ($result = $stmt->fetch(PDO::FETCH_ASSOC)) {
-			$masterArray[] = $result;
+		$connection = $this->getConnection();
+		$stmt = $connection->prepare("SELECT name,start_date,lesson_count FROM subject WHERE serial_id = :id");
+		foreach ($IDarray as $id) {
+			$stmt->bindParam(':id',$id);
+			$stmt->execute();
+			while ($result = $stmt->fetch(PDO::FETCH_ASSOC)) {
+				$masterArray[] = $result;
+			}
 		}
+
 		header('Content Type:text/plain;charset=utf:8');
 		echo json_encode($masterArray);
 	}
