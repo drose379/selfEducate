@@ -1,6 +1,6 @@
 <?php
 
-class mySubjectsGrabber {
+class publicSubjectGrabber1 {
 
 	public function run() {
 		$post = file_get_contents("php://input");
@@ -17,10 +17,11 @@ class mySubjectsGrabber {
 	public function getSubjectInfo($ownerID) {
 		$masterArray = [];
 		$connection = $this->getConnection();
-		$stmt = $connection->prepare("SELECT name,start_date,lesson_count FROM subject WHERE owner_id = :id");
+		$stmt = $connection->prepare("SELECT name,start_date,lesson_count FROM subject WHERE owner_id <> :id AND privacy = :privacy");
+		$stmt->bindValue(':privacy',"PUBLIC");
 		$stmt->bindParam(':id',$ownerID);
 		$stmt->execute();
-		while ($result = $stmt->fetch(PDO::FETCH_ASSOC)) {
+		while($result = $stmt->fetch(PDO::FETCH_ASSOC)) {
 			$masterArray[] = $result;
 		}
 		header('Content Type:text/plain;charset=utf:8');

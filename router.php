@@ -8,6 +8,9 @@ require 'lessonGetter.php';
 require 'newTag.php';
 require 'getTags.php';
 require 'mySubjectsGrabber.php';
+require 'publicSubjectGrabber1.php';
+require 'publicSubjectGrabber2.php';
+require 'newBookmark.php';
 
 class router {
     
@@ -28,7 +31,10 @@ $this->routes = [
     "/getLessons" => [new lessonGetter,"run"],
     "/newTag" => [new newTag,"run"],
     "/getTags" => [new getTags,"run"],
-    "/getLocalSubjectData" => [new mySubjectsGrabber,"run"]
+    "/getLocalSubjectData" => [new mySubjectsGrabber,"run"],
+    "/getPublicSubject1" => [new publicSubjectGrabber1,"run"],
+    "/getPublicSubject2" => [new publicSubjectGrabber2,"run"],
+    "/newBookmark" => [new newBookmark,"run"]
     ];
 }
   
