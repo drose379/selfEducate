@@ -1,16 +1,17 @@
 <?php
 
-require 'subCreater.php';
-require 'subGetter.php';
-require 'subDeleter.php';
-require 'newLesson2.php';
-require 'lessonGetter.php';
-require 'newTag.php';
-require 'getTags.php';
-require 'mySubjectsGrabber.php';
-require 'publicSubjectGrabber1.php';
-require 'publicSubjectGrabber2.php';
-require 'newBookmark.php';
+require 'setData/subCreater.php';
+require 'getData/subGetter.php';
+require 'removeData/subDeleter.php';
+require 'setData/newLesson2.php';
+require 'getData/lessonGetter.php';
+require 'setData/newTag.php';
+require 'getData/getTags.php';
+require 'getData/mySubjectsGrabber.php';
+require 'getData/getPubSubjectNames1.php';
+require 'getData/getPubSubFull1.php';
+require 'setData/newBookmark.php';
+require 'getData/getBookmarks.php';
 
 class router {
     
@@ -23,7 +24,7 @@ public function __construct() {
     
 
 public function loadRoutes() {
-$this->routes = [
+  $this->routes = [
     "/newSubject" => [new subCreater,"run"],
     "/getSubjects" => [new subGetter,"run"],
     "/deleteSubject" => [new subDeleter,"run"],
@@ -32,9 +33,10 @@ $this->routes = [
     "/newTag" => [new newTag,"run"],
     "/getTags" => [new getTags,"run"],
     "/getLocalSubjectData" => [new mySubjectsGrabber,"run"],
-    "/getPublicSubject1" => [new publicSubjectGrabber1,"run"],
-    "/getPublicSubject2" => [new publicSubjectGrabber2,"run"],
-    "/newBookmark" => [new newBookmark,"run"]
+    "/getSubNames" => [new pubSubNames1,"run"],
+    "/getPubSubFull1" => [new getPubSubFull1,"run"],
+    "/newBookmark" => [new newBookmark,"run"],
+    "/getBookmarks" => [new getBookmarks,"run"]
     ];
 }
   
