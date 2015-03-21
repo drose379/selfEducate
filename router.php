@@ -3,15 +3,17 @@
 require 'setData/subCreater.php';
 require 'getData/subGetter.php';
 require 'removeData/subDeleter.php';
-require 'setData/newLesson2.php';
 require 'getData/lessonGetter.php';
-require 'setData/newTag.php';
 require 'getData/getTags.php';
 require 'getData/mySubjectsGrabber.php';
 require 'getData/getPubSubjectNames1.php';
 require 'getData/getPubSubFull1.php';
-require 'setData/newBookmark.php';
 require 'getData/getBookmarks.php';
+
+require 'setData/newLesson2.php';
+require 'setData/newTag.php';
+require 'setData/newBookmark.php';
+require 'setData/hideSubject.php';
 
 class router {
     
@@ -36,7 +38,8 @@ public function loadRoutes() {
     "/getSubNames" => [new pubSubNames1,"run"],
     "/getPubSubFull1" => [new getPubSubFull1,"run"],
     "/newBookmark" => [new newBookmark,"run"],
-    "/getBookmarks" => [new getBookmarks,"run"]
+    "/getBookmarks" => [new getBookmarks,"run"],
+    "/hideSubject" => [new hideSubject,"run"]
     ];
 }
   
