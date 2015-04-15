@@ -1,19 +1,23 @@
 <?php
 
 require 'setData/subCreater.php';
-require 'getData/subGetter.php';
+require 'getData/getLocalSubs.php';
 require 'removeData/subDeleter.php';
 require 'getData/lessonGetter.php';
 require 'getData/getTags.php';
-require 'getData/mySubjectsGrabber.php';
 require 'getData/getPubSubjectNames1.php';
 require 'getData/getPubSubFull1.php';
 require 'getData/getBookmarks.php';
+require 'getData/getCategories.php';
+require 'getData/getSelectedBookmark.php';
+require 'getData/getBookmarkLessons.php';
 
 require 'setData/newLesson2.php';
 require 'setData/newTag.php';
 require 'setData/newBookmark.php';
 require 'setData/hideSubject.php';
+require 'setData/newCategory.php';
+require 'setData/newBookmarkLesson.php';
 
 class router {
     
@@ -28,18 +32,22 @@ public function __construct() {
 public function loadRoutes() {
   $this->routes = [
     "/newSubject" => [new subCreater,"run"],
-    "/getSubjects" => [new subGetter,"run"],
     "/deleteSubject" => [new subDeleter,"run"],
     "/newLesson" => [new newLesson,"run"], //change to new script 
+    "/getLocalSubs" => [new getLocalsubs,"run"],
     "/getLessons" => [new lessonGetter,"run"],
     "/newTag" => [new newTag,"run"],
     "/getTags" => [new getTags,"run"],
-    "/getLocalSubjectData" => [new mySubjectsGrabber,"run"],
     "/getSubNames" => [new pubSubNames1,"run"],
     "/getPubSubFull1" => [new getPubSubFull1,"run"],
     "/newBookmark" => [new newBookmark,"run"],
     "/getBookmarks" => [new getBookmarks,"run"],
-    "/hideSubject" => [new hideSubject,"run"]
+    "/hideSubject" => [new hideSubject,"run"],
+    "/getCategories" => [new getCategories,"run"],
+    "/newCategory" => [new newCategory,"run"],
+    "/getBookmarkData" => [new getSelectedBookmark,"run"],
+    "/newBookmarkLesson" => [new newBookmarkLesson,"run"],
+    "/getBookmarkLessons" => [new getBookmarkLessons,"run"]
     ];
 }
   

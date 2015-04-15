@@ -6,12 +6,13 @@ public function run() {
 	$post = file_get_contents("php://input");
 	$post = json_decode($post,true);
 
-	$subject = $post["subjectName"];
+	$subject = $post["subject"];
 	$ownerID = $post["owner_id"];
 	$privacy = $post["privacy"];
+	$category = $post["category"];
 	$date = date('F j, Y');
 
-	$this->insert($subject,$ownerID,$date,$privacy);
+	$this->insert($subject,$ownerID,$date,$privacy,$category);
 }
 
 public function getConnection() {
@@ -19,13 +20,14 @@ public function getConnection() {
 	return $connection;
 }
 
-public function insert($subject,$ownerID,$date,$privacy) {
+public function insert($subject,$ownerID,$date,$privacy,$category) {
 	$connection = $this->getConnection();
-	$stmt = $connection->prepare("INSERT INTO subject (name,owner_id,privacy,start_date) VALUES (:subject,:ownerID,:privacy,:currentDate)");
+	$stmt = $connection->prepare("INSERT INTO subject (name,owner_id,privacy,category,start_date) VALUES (:subject,:ownerID,:privacy,:category,:currentDate)");
 	$stmt->bindParam(':subject',$subject);
 	$stmt->bindParam(':ownerID',$ownerID);
-	$stmt->bindParam(':currentDate',$date);
 	$stmt->bindParam(':privacy',$privacy);
+	$stmt->bindParam(':category',$category);
+	$stmt->bindParam(':currentDate',$date);
 	$stmt->execute();
 }
 
