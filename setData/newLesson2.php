@@ -12,20 +12,20 @@ class newLesson {
 		$post = file_get_contents("php://input");
 		$post = json_decode($post,true);
 
-
 		$this->subjectName = $post["subject_name"];
 		$this->lessonName = $post["lesson_name"];
 		$this->tags = $post["tags"];
 		$this->objectives = $post["objectives"];   
-		$this->startDate = date('F j, Y');
 
 		$connection = $this->getConnection();
 
-		$this->addBase($connection);
+		$this->addBase();
+		/*
 		$this->addTags($connection);
 		$this->addObjectives($connection);
 		$count = $this->getLessonCount($connection);
 		$this->updateLessonCount($connection,$count);
+		*/
 	}
 
 	public function getConnection() {
@@ -33,7 +33,8 @@ class newLesson {
 		return $connection;
 	} 
 
-	public function getLessonCount($con) {
+	public function getLessonCount() {
+		$con = $this->getConnection();
 		$stmt = $con->prepare("SELECT lesson_name FROM lesson WHERE subject = :subject ");
 		$stmt->bindParam(':subject',$this->subjectName);
 		$stmt->execute();
@@ -46,15 +47,17 @@ class newLesson {
 	public function updateLessonCount($con,$count) {
 		$stmt = $con->prepare("UPDATE subject SET lesson_count = :count WHERE name = :subject");
 		$stmt->bindParam(':count',$count);
-		$stmt->bindParam(':subject',$this->subjectName);
+		$stmt->bindValue(':subject',$this->subjectName);
 		$stmt->execute();
 	}
 
-	public function addBase($con) {
-		$stmt = $con->prepare("INSERT INTO lesson (subject,lesson_name,start_date) VALUES (:subject,:lesson,:currentDate)");
-		$stmt->bindParam(':subject',$this->subjectName);
-		$stmt->bindParam(':lesson',$this->lessonName);
-		$stmt->bindParam(':currentDate',$this->startDate);
+	public function addBase() {
+		$con = $this->getConnection();
+		$a = $this->subjectName;
+		$b = $this->lessonName;
+		$stmt = $con->prepare("INSERT INTO lesson (subject,lesson_name) VALUES (:bookmark,:lesson)");
+		$stmt->bindParam(':bookmark',$a);
+		$stmt->bindParam(':lesson',$b);
 		$stmt->execute();
 	}
 
@@ -64,6 +67,7 @@ class newLesson {
 		//$stmt->bindParam(':tag',$tag);
 		$stmt->bindParam(':lesson',$this->lessonName);
 		foreach ($this->tags as $tag) {
+			file_put_contents("regLessonObjectives.txt",$tag,FILE_APPEND);
 			$stmt->bindParam(':tag',$tag); //Need to check the $this->Tags
 			$stmt->execute();
 		}

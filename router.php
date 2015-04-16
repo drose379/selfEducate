@@ -3,7 +3,6 @@
 require 'setData/subCreater.php';
 require 'getData/getLocalSubs.php';
 require 'removeData/subDeleter.php';
-require 'getData/lessonGetter.php';
 require 'getData/getTags.php';
 require 'getData/getPubSubjectNames1.php';
 require 'getData/getPubSubFull1.php';
@@ -35,7 +34,6 @@ public function loadRoutes() {
     "/deleteSubject" => [new subDeleter,"run"],
     "/newLesson" => [new newLesson,"run"], //change to new script 
     "/getLocalSubs" => [new getLocalsubs,"run"],
-    "/getLessons" => [new lessonGetter,"run"],
     "/newTag" => [new newTag,"run"],
     "/getTags" => [new getTags,"run"],
     "/getSubNames" => [new pubSubNames1,"run"],
