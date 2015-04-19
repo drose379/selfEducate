@@ -16,6 +16,7 @@ class newLesson {
 		$this->lessonName = $post["lesson_name"];
 		$this->tags = $post["tags"];
 		$this->objectives = $post["objectives"];   
+		$this->imgUri = $post["imgUri"];
 
 		$connection = $this->getConnection();
 
@@ -55,9 +56,10 @@ class newLesson {
 		$con = $this->getConnection();
 		$a = $this->subjectName;
 		$b = $this->lessonName;
-		$stmt = $con->prepare("INSERT INTO lesson (subject,lesson_name) VALUES (:bookmark,:lesson)");
+		$stmt = $con->prepare("INSERT INTO lesson (subject,lesson_name,imageURI) VALUES (:bookmark,:lesson,:imgUri)");
 		$stmt->bindParam(':bookmark',$a);
 		$stmt->bindParam(':lesson',$b);
+		$stmt->bindParam(':imgUri',$this->imgUri);
 		$stmt->execute();
 	}
 
