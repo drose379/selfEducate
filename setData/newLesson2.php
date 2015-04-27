@@ -7,6 +7,7 @@ class newLesson {
 	private $startDate;
 	private $tags;
 	private $objectives;
+	private $imgUri;
 
 	public function run() {
 		$post = file_get_contents("php://input");
@@ -19,6 +20,8 @@ class newLesson {
 		$this->imgUri = $post["imgUri"];
 
 		$connection = $this->getConnection();
+
+		file_put_contents("testLesson.txt",$this->imgUri);
 
 		$this->addBase();
 		/*
@@ -56,10 +59,10 @@ class newLesson {
 		$con = $this->getConnection();
 		$a = $this->subjectName;
 		$b = $this->lessonName;
-		$stmt = $con->prepare("INSERT INTO lesson (subject,lesson_name,imageURI) VALUES (:bookmark,:lesson,:imgUri)");
-		$stmt->bindParam(':bookmark',$a);
+		$stmt = $con->prepare("INSERT INTO lesson (subject,lesson_name,imageURL) VALUES (:subject,:lesson,:imgURL)");
+		$stmt->bindParam(':subject',$a);
 		$stmt->bindParam(':lesson',$b);
-		$stmt->bindParam(':imgUri',$this->imgUri);
+		$stmt->bindParam(':imgURL',$this->imgUri);
 		$stmt->execute();
 	}
 

@@ -1,6 +1,5 @@
 <?php
 
-require 'setData/subCreater.php';
 require 'getData/getLocalSubs.php';
 require 'removeData/subDeleter.php';
 require 'getData/getTags.php';
@@ -10,13 +9,17 @@ require 'getData/getBookmarks.php';
 require 'getData/getCategories.php';
 require 'getData/getSelectedBookmark.php';
 require 'getData/getBookmarkLessons.php';
+require 'getData/getLocalLessons.php';
 
+require 'setData/subCreater.php';
 require 'setData/newLesson2.php';
 require 'setData/newTag.php';
 require 'setData/newBookmark.php';
 require 'setData/hideSubject.php';
 require 'setData/newCategory.php';
 require 'setData/newBookmarkLesson.php';
+require 'setData/setLessonImage.php';
+
 
 class router {
     
@@ -45,8 +48,11 @@ public function loadRoutes() {
     "/newCategory" => [new newCategory,"run"],
     "/getBookmarkData" => [new getSelectedBookmark,"run"],
     "/newBookmarkLesson" => [new newBookmarkLesson,"run"],
-    "/getBookmarkLessons" => [new getBookmarkLessons,"run"]
-    ];
+    "/getBookmarkLessons" => [new getBookmarkLessons,"run"],
+    "/getLocalLessons" => [new getLocalLessons,"run"],
+    //getting public and local lessons are the same thing, the only difference in getting lessons is with getting bookmark lessons
+    "/getPublicLessons" => [new getLocalLessons,"run"],
+    "/setDefaultImage" => [new lessonImage,"run"]    ];
 }
   
 public function match($path) {

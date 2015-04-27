@@ -8,8 +8,8 @@ class getLocalLessons {
 
 		$subject = $post["subject"];
 
-		$localLessons = $this->getLocalLessons($ownerID,$subject);
-		//send response
+		$localLessons = $this->getLocalLessons($subject);
+		$this->sendResponse($localLessons);
 	}
 
 	public function getConnection() {
@@ -20,13 +20,29 @@ class getLocalLessons {
 	public function getLocalLessons($subject) {
 		$localLessons = [];
 		$con = $this->getConnection();
-		$stmt = $con->prepare("SELECT lesson_name FROM lesson WHERE subject = :subject");
+		$stmt = $con->prepare("SELECT lesson_name,imageBase64 FROM lesson WHERE subject = :subject");
 		$stmt->bindParam(':subject',$subject);
 		$stmt->execute();
 		while ($result = $stmt->fetch(PDO::FETCH_ASSOC)) {
 			$localLessons[] = $result;
 		}
-		$localLessons = array_column($localLessons,'lesson_name');
-		return $localLessons;
+
+		$lessonNames= array_column($localLessons,'lesson_name');
+		$lessonImages = array_column($localLessons,'imageBase64');
+			
+		foreach ($lessonImages as $imageCode) {
+			gzinflate($imageCode);
+		}
+
+		$masterLessonInfo = [];
+		//$masterLessonInfo["names"] = $lessonNames;
+		$masterLessonInfo["images"] = $lessonImages;
+				
+		return $masterLessonInfo;
 	} 
+
+	public function sendResponse(array $localLessons) {
+		header('Content Type:text/plain;charset=utf:8');
+		echo json_encode($localLessons);
+	}
 }
