@@ -24,12 +24,12 @@ class newLesson {
 		file_put_contents("testLesson.txt",$this->imgUri);
 
 		$this->addBase();
-		/*
+		
 		$this->addTags($connection);
 		$this->addObjectives($connection);
 		$count = $this->getLessonCount($connection);
 		$this->updateLessonCount($connection,$count);
-		*/
+		
 	}
 
 	public function getConnection() {

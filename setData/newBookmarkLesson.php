@@ -74,6 +74,7 @@ class newBookmarkLesson {
 			$stmt->bindParam(':imageURL',$imageURL);
 			$stmt->execute();
 		} else if ($lesson_privacy == "PUBLIC") {
+			//issue inserting lesson here, need to insert imageURL but not bookmarkID (null). Find way to skip over bookmarkID here
 			$stmt2 = $con->prepare("INSERT INTO lesson (subject,lesson_name,bookmarkID,imageURL) VALUES (:bookmark,:lesson,:imageURL)");
 			$stmt2->bindParam(':bookmark',$bookmark);
 			$stmt2->bindParam(':lesson',$lesson);
