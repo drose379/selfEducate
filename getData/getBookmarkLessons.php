@@ -2,10 +2,13 @@
 
 class getBookmarkLessons {
 
+	private $masterLessons;
+
 	public function run() {
 		$post = file_get_contents("php://input");
 		$post = json_decode($post,true);
 		$owner_id = $post["owner_id"];
+		$subject = $post["subject"];
 
 		/*
 			* Need to get all bookmarkIDs for the given user, also need to get lesson_privacy of each bookmark to decide where to get lessons from
@@ -15,9 +18,9 @@ class getBookmarkLessons {
 				* If the bookmark is PRIVATE, pull the lessons from the bookmark_lesson table.
 		*/
 
-		$bookmarkInfo = $this->getBookmarkInfo($owner_id);
-		$bookmarkMaster = $this->getFullInfo($bookmarkInfo);
-		$this->sendResponse($bookmarkMaster);
+		$bookmarkInfo = $this->getBookmarkInfo($owner_id,$subject);
+		$this->getFullInfo($bookmarkInfo);
+		$this->sendResponse();
 	}
 
 	public function getConnection() {
@@ -25,11 +28,12 @@ class getBookmarkLessons {
 		return $connection;
 	}
 
-	public function getBookmarkInfo($ownerID) {
+	public function getBookmarkInfo($ownerID,$subject) {
 		$bookmarkData = [];
 		$con = $this->getConnection();
-		$stmt = $con->prepare("SELECT subject_name,subscribed,lesson_privacy,bookmark_id FROM subject_bookmarks WHERE owner_id = :ownerID");
+		$stmt = $con->prepare("SELECT subject_name,subscribed,lesson_privacy,bookmark_id FROM subject_bookmarks WHERE owner_id = :ownerID AND subject_name = :subject");
 		$stmt->bindParam(':ownerID',$ownerID);
+		$stmt->bindParam(':subject',$subject);
 		$stmt->execute();
 		while($result = $stmt->fetch(PDO::FETCH_ASSOC)) {
 			$bookmarkData[] = $result;
@@ -47,7 +51,7 @@ class getBookmarkLessons {
 				* Need to grab lessons from the lessons table the correspond with the subject name
 		*/	
 
-		$masterBookmarks = [];
+		//$masterBookmarks = [];
 
 		foreach ($bookmarks as $bookmark) {
 			$bookmarkName = $bookmark["subject_name"];
@@ -57,20 +61,20 @@ class getBookmarkLessons {
 
 			if ($subscribed == "0") {
 			//pulls lessons for person who IS NOT subscribed to subject
-				$currentInfo = $this->getUnsubscribedLessons($bookmarkID,$lessonPrivacy);
+				$this->getUnsubscribedLessons($bookmarkID,$lessonPrivacy);
 			} else if ($subscribed == "1" ) {
 			//pulls lessons for person who IS subscribed to subject
-				$currentInfo = $this->getSubscribedLessons($bookmarkName,$bookmarkID,$lessonPrivacy);
+				$this->getSubscribedLessons($bookmarkName,$bookmarkID,$lessonPrivacy);
 			}
-			$masterBookmarks[$bookmarkName] = $currentInfo;
+			//$masterBookmarks[] = $currentInfo;
 		}
-		return $masterBookmarks;
+		//return $masterBookmarks;
 	}
 
 	public function getUnsubscribedLessons($bookmarkID,$lessonPrivacy) {
 		//Gets called if user is NOT SUBSCRIBED
-		$masterLessons = [];
-		$lessons2 = [];
+		//$masterLessons = [];
+		//$lessons2 = [];
 		
 		/*
 			* IF bookmarks lessons are PRIVATE, this would be UNSUBSCRIBED + PRIVATE
@@ -81,22 +85,22 @@ class getBookmarkLessons {
 
 		$con = $this->getConnection();
 
-		$stmt = $con->prepare("SELECT lesson FROM bookmark_lesson WHERE bookmarkID = :bookmarkID");
+		$stmt = $con->prepare("SELECT lesson_name FROM bookmark_lesson WHERE bookmarkID = :bookmarkID");
 		$stmt->bindParam(':bookmarkID',$bookmarkID);
 		$stmt->execute();
 		while($result = $stmt->fetch(PDO::FETCH_ASSOC)) {
-			$masterLessons[] = $result;
+			$this->masterLessons[] = $result;
 		}
-		$masterLessons = array_column($masterLessons,'lesson');
+
 
 		if ($lessonPrivacy == "PRIVATE") {
-			$stmt2 = $con->prepare("SELECT lesson FROM bkmk_private_lessons WHERE bookmarkID = :bookmarkID");
+			$stmt2 = $con->prepare("SELECT lesson_name,imageURL FROM bkmk_private_lessons WHERE bookmarkID = :bookmarkID");
 			$stmt2->bindParam(':bookmarkID',$bookmarkID);
 			$stmt2->execute();
 			while ($result2 = $stmt2->fetch(PDO::FETCH_ASSOC)) {
-				$lessons2[] = $result2;
+				$this->masterLessons[] = $result2;
 			}
-			$lessons2 = array_column($lessons2,'lesson');
+
 		} 
 		else if ($lessonPrivacy == "PUBLIC") {
 			//pull from lesson where bookmarkID = :bookmarkID
@@ -104,22 +108,19 @@ class getBookmarkLessons {
 			$stmt3->bindParam(':bookmarkID',$bookmarkID);
 			$stmt3->execute();
 			while($result3 = $stmt3->fetch(PDO::FETCH_ASSOC)) {
-				$lessons2[] = $result3;
+				$this->masterLessons[] = $result3;
 			}
-			$lessons2 = array_column($lessons2,'lesson_name');
+
 		}
 
 		//add lessons from second query to the master lessons array
 		foreach ($lessons2 as $lesson) {
-			$masterLessons[] = $lesson;
+			$this->masterLessons[] = $lesson;
 		}
 
-		return $masterLessons;
 	}
 
 	public function getSubscribedLessons($subject,$bookmarkID,$lessonPrivacy) {
-		$masterLessons = [];
-		$lessons2 = [];
 
 		$con = $this->getConnection();
 		/*
@@ -132,42 +133,34 @@ class getBookmarkLessons {
 		*/
 
 		if ($lessonPrivacy == "PRIVATE") {
-			$stmt = $con->prepare("SELECT lesson FROM bkmk_private_lessons WHERE bookmarkID = :bookmarkID");
+			$stmt = $con->prepare("SELECT lesson_name FROM bkmk_private_lessons WHERE bookmarkID = :bookmarkID");
 			$stmt->bindParam(':bookmarkID',$bookmarkID);
 			$stmt->execute();
 			while($result = $stmt->fetch(PDO::FETCH_ASSOC)) {
-				$masterLessons[] = $result;
+				$this->masterLessons[] = $result;
 			}
-			$masterLessons = array_column($masterLessons,'lesson');
 
 			$stmt2 = $con->prepare("SELECT lesson_name FROM lesson WHERE subject = :bookmarkName");
 			$stmt2->bindParam(':bookmarkName',$subject);
 			$stmt2->execute();
 			while ($result2 = $stmt2->fetch(PDO::FETCH_ASSOC)) {
-				$lessons2[] = $result2;
+				$this->masterLessons[] = $result2;
 			}
-			$lessons2 = array_column($lessons2,'lesson_name');
+
 		}
 		else if ($lessonPrivacy == "PUBLIC") {
 			$stmt = $con->prepare("SELECT lesson_name FROM lesson WHERE subject = :bookmark");
 			$stmt->bindParam(':bookmark',$subject);
 			$stmt->execute();
 			while($result = $stmt->fetch(PDO::FETCH_ASSOC)) {
-				$masterLessons[] = $result;
-			}
-			$masterLessons = array_column($masterLessons,'lesson_name');
-		}
-		if ($lessons2 != null) {
-			foreach ($lessons2 as $lesson) {
-				$masterLessons[] = $lesson;
+				$this->masterLessons[] = $result;
 			}
 		}
-		return $masterLessons;
 	}
 
 	public function sendResponse($allLessons) {
 		header('Content Type:text/plain;charset=utf:8');
-		echo json_encode($allLessons);
+		echo json_encode($this->masterLessons);
 	}
 
 }

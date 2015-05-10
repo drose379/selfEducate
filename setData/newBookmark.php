@@ -11,6 +11,7 @@ class newBookmark {
 		$ownerID = $post["ownerID"];
 		$bookmarkID = $post["bookmarkID"];
 		$subscribe = $post["subscribe"];
+		//publicLessons is a boolean (yes or no)
 		$publicLessons = $post["publicLessons"];
 
 		if ($publicLessons == "Yes") {
@@ -75,7 +76,7 @@ class newBookmark {
 
 	public function insertAsIsLessons(array $asIsLessons,$subject,$bookmarkID) {
 		$con = $this->getConnection();
-		$stmt = $con->prepare("INSERT INTO bookmark_lesson (subject,lesson,bookmarkID) VALUES (:subject,:lesson,:bookmarkID)");
+		$stmt = $con->prepare("INSERT INTO bookmark_lesson (subject,lesson_name,bookmarkID) VALUES (:subject,:lesson,:bookmarkID)");
 		$stmt->bindParam(':subject',$subject);
 		$stmt->bindParam(':bookmarkID',$bookmarkID);
 		$stmt->bindParam(':lesson',$currentLesson);

@@ -1,4 +1,4 @@
-<?php
+ <?php
 
 class lessonImage {
 	public function run() {
@@ -13,7 +13,7 @@ class lessonImage {
 
 		$fileName = "lessonImages/" . $randID . ".jpg";
 
-		imagejpeg($image,$fileName,100);
+		imagejpeg($image,$fileName,55);
 
 		//need to return the image url to the java code
 

@@ -42,7 +42,7 @@ class newBookmarkLesson {
 		*/
 			file_put_contents("unSubCalled.txt",$lesson_privacy);
 		if ($lesson_privacy == "PRIVATE") {
-			$stmt = $con->prepare("INSERT INTO bkmk_private_lessons (subject,lesson,bookmarkID,imageURL) VALUES (:bookmark,:lesson,:bookmarkID,:imageURL)");
+			$stmt = $con->prepare("INSERT INTO bkmk_private_lessons (subject,lesson_name,bookmarkID,imageURL) VALUES (:bookmark,:lesson,:bookmarkID,:imageURL)");
 			$stmt->bindParam(':bookmark',$bookmark);
 			$stmt->bindParam(':lesson',$lesson);
 			$stmt->bindParam(':bookmarkID',$bookmarkID);
@@ -67,7 +67,7 @@ class newBookmarkLesson {
 		*/
 
 		if ($lesson_privacy == "PRIVATE") {
-			$stmt = $con->prepare("INSERT INTO bkmk_private_lessons (subject,lesson,bookmarkID,imageURL) VALUES (:bookmark,:lesson,:bookmarkID,:imageURL)");
+			$stmt = $con->prepare("INSERT INTO bkmk_private_lessons (subject,lesson_name,bookmarkID,imageURL) VALUES (:bookmark,:lesson,:bookmarkID,:imageURL)");
 			$stmt->bindParam(':bookmark',$bookmark);
 			$stmt->bindParam(':lesson',$lesson);
 			$stmt->bindParam(':bookmarkID',$bookmarkID);

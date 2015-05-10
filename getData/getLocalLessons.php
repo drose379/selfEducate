@@ -19,26 +19,16 @@ class getLocalLessons {
 
 	public function getLocalLessons($subject) {
 		$localLessons = [];
+
 		$con = $this->getConnection();
-		$stmt = $con->prepare("SELECT lesson_name,imageBase64 FROM lesson WHERE subject = :subject");
+		$stmt = $con->prepare("SELECT lesson_name,imageURL FROM lesson WHERE subject = :subject");
 		$stmt->bindParam(':subject',$subject);
 		$stmt->execute();
 		while ($result = $stmt->fetch(PDO::FETCH_ASSOC)) {
 			$localLessons[] = $result;
 		}
-
-		$lessonNames= array_column($localLessons,'lesson_name');
-		$lessonImages = array_column($localLessons,'imageBase64');
-			
-		foreach ($lessonImages as $imageCode) {
-			gzinflate($imageCode);
-		}
-
-		$masterLessonInfo = [];
-		//$masterLessonInfo["names"] = $lessonNames;
-		$masterLessonInfo["images"] = $lessonImages;
 				
-		return $masterLessonInfo;
+		return $localLessons;
 	} 
 
 	public function sendResponse(array $localLessons) {

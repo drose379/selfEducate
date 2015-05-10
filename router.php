@@ -10,6 +10,8 @@ require 'getData/getCategories.php';
 require 'getData/getSelectedBookmark.php';
 require 'getData/getBookmarkLessons.php';
 require 'getData/getLocalLessons.php';
+require 'getData/getLessonStockImages.php';
+require 'getData/grabImage.php';
 
 require 'setData/subCreater.php';
 require 'setData/newLesson2.php';
@@ -52,7 +54,9 @@ public function loadRoutes() {
     "/getLocalLessons" => [new getLocalLessons,"run"],
     //getting public and local lessons are the same thing, the only difference in getting lessons is with getting bookmark lessons
     "/getPublicLessons" => [new getLocalLessons,"run"],
-    "/setDefaultImage" => [new lessonImage,"run"]    ];
+    "/setDefaultImage" => [new lessonImage,"run"],
+    "/getImageFromURL" => [new grabImage,"run"]
+    ];
 }
   
 public function match($path) {
