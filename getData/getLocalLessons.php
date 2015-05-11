@@ -9,7 +9,8 @@ class getLocalLessons {
 		$subject = $post["subject"];
 
 		$localLessons = $this->getLocalLessons($subject);
-		$this->sendResponse($localLessons);
+		$objectives = $this->getObjectives($localLessons);
+		$this->sendResponse($localLessons,$objectives);
 	}
 
 	public function getConnection() {
@@ -31,8 +32,27 @@ class getLocalLessons {
 		return $localLessons;
 	} 
 
-	public function sendResponse(array $localLessons) {
+	public function getObjectives($lessons) {
+		$objectives = [];
+		$con = $this->getConnection();
+		foreach ($lessons as $lesson) {
+			$lessonName = $lesson["lesson_name"];
+			$stmt = $con->prepare("SELECT lesson,objective FROM lesson_objectives WHERE lesson = :lesson LIMIT 1");
+			$stmt->bindParam(':lesson',$lessonName);
+			$stmt->execute();
+			while($result = $stmt->fetch(PDO::FETCH_ASSOC)) {
+				$objectives[] = $result;
+			}
+		}
+		return $objectives;
+	}
+
+
+	public function sendResponse(array $localLessons,$objectives) {
+		$master = [];
+		$master["lessonInfo"] = $localLessons;
+		$master["objectives"] = $objectives;
 		header('Content Type:text/plain;charset=utf:8');
-		echo json_encode($localLessons);
+		echo json_encode($master);
 	}
 }
