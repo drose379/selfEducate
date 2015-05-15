@@ -9,7 +9,6 @@ class newBookmarkLesson {
 		$lessonName = $post["lesson_name"];
 		$objectives = $post["objectives"];
 		$tags = $post["tags"];
-		$imageURL = $post["imgURL"];
 
 		$lessons_privacy = $post["lesson_privacy"];
 		$subscribed = $post["subscribed"];
@@ -18,11 +17,11 @@ class newBookmarkLesson {
 		//Use the routes from getBookmarkLessons to determine where to save each type of lesson
 
 		if ($subscribed == "0") {
-			$this->insertUnsubscribedLesson($bookmarkName,$lessonName,$lessons_privacy,$bookmarkID,$imageURL);
+			$this->insertUnsubscribedLesson($bookmarkName,$lessonName,$lessons_privacy,$bookmarkID);
 			$this->addTags($tags,$bookmarkName,$lessonName);
 			$this->addObjectives($objectives,$bookmarkName,$lessonName);
 		} else {
-			$this->insertSubscribedLesson($bookmarkName,$lessonName,$lessons_privacy,$bookmarkID,$imageURL);
+			$this->insertSubscribedLesson($bookmarkName,$lessonName,$lessons_privacy,$bookmarkID);
 			$this->addTags($tags,$bookmarkName,$lessonName);
 			$this->addObjectives($objectives,$bookmarkName,$lessonName);
 		}
@@ -33,7 +32,7 @@ class newBookmarkLesson {
 		return $connection;
 	}
 
-	public function insertUnsubscribedLesson($bookmark,$lesson,$lesson_privacy,$bookmarkID,$imageURL) {
+	public function insertUnsubscribedLesson($bookmark,$lesson,$lesson_privacy,$bookmarkID) {
 		$con = $this->getConnection();
 		/*
 			* check for private or public
@@ -42,23 +41,21 @@ class newBookmarkLesson {
 		*/
 			file_put_contents("unSubCalled.txt",$lesson_privacy);
 		if ($lesson_privacy == "PRIVATE") {
-			$stmt = $con->prepare("INSERT INTO bkmk_private_lessons (subject,lesson_name,bookmarkID,imageURL) VALUES (:bookmark,:lesson,:bookmarkID,:imageURL)");
+			$stmt = $con->prepare("INSERT INTO bkmk_private_lessons (subject,lesson_name,bookmarkID) VALUES (:bookmark,:lesson,:bookmarkID)");
 			$stmt->bindParam(':bookmark',$bookmark);
 			$stmt->bindParam(':lesson',$lesson);
 			$stmt->bindParam(':bookmarkID',$bookmarkID);
-			$stmt->bindParam(':imageURL',$imageURL);
 			$stmt->execute();
 		} else if ($lesson_privacy == "PUBLIC") {
-			$stmt2 = $con->prepare("INSERT INTO lesson (subject,lesson_name,bookmarkID,imageURL) VALUES (:subject,:lesson,:bookmarkID,:imageURL)");
+			$stmt2 = $con->prepare("INSERT INTO lesson (subject,lesson_name,bookmarkID VALUES (:subject,:lesson,:bookmarkID)");
 			$stmt2->bindParam(':subject',$bookmark);
 			$stmt2->bindParam(':lesson',$lesson);
 			$stmt2->bindParam(':bookmarkID',$bookmarkID);
-			$stmt2->bindParam(':imageURL',$imageURL);
 			$stmt2->execute();
 		}
 	}
 
-	public function insertSubscribedLesson($bookmark,$lesson,$lesson_privacy,$bookmarkID,$imageURL) {
+	public function insertSubscribedLesson($bookmark,$lesson,$lesson_privacy,$bookmarkID) {
 		$con = $this->getConnection();
 		/*
 			* check for private or public
@@ -67,18 +64,16 @@ class newBookmarkLesson {
 		*/
 
 		if ($lesson_privacy == "PRIVATE") {
-			$stmt = $con->prepare("INSERT INTO bkmk_private_lessons (subject,lesson_name,bookmarkID,imageURL) VALUES (:bookmark,:lesson,:bookmarkID,:imageURL)");
+			$stmt = $con->prepare("INSERT INTO bkmk_private_lessons (subject,lesson_name,bookmarkID) VALUES (:bookmark,:lesson,:bookmarkID)");
 			$stmt->bindParam(':bookmark',$bookmark);
 			$stmt->bindParam(':lesson',$lesson);
 			$stmt->bindParam(':bookmarkID',$bookmarkID);
-			$stmt->bindParam(':imageURL',$imageURL);
 			$stmt->execute();
 		} else if ($lesson_privacy == "PUBLIC") {
 			//issue inserting lesson here, need to insert imageURL but not bookmarkID (null). Find way to skip over bookmarkID here
-			$stmt2 = $con->prepare("INSERT INTO lesson (subject,lesson_name,bookmarkID,imageURL) VALUES (:bookmark,:lesson,:imageURL)");
+			$stmt2 = $con->prepare("INSERT INTO lesson (subject,lesson_name,bookmarkID) VALUES (:bookmark,:lesson)");
 			$stmt2->bindParam(':bookmark',$bookmark);
 			$stmt2->bindParam(':lesson',$lesson);
-			$stmt2->bindParam(':imageURL',$imageURL);
 			$stmt2->execute();
 		}
 	}

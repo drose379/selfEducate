@@ -3,6 +3,7 @@
 class getBookmarkLessons {
 
 	private $masterLessons;
+	private $masterTags;
 
 	public function run() {
 		$post = file_get_contents("php://input");
@@ -20,6 +21,7 @@ class getBookmarkLessons {
 
 		$bookmarkInfo = $this->getBookmarkInfo($owner_id,$subject);
 		$this->getFullInfo($bookmarkInfo);
+		$this->getLessonTags();
 		$this->sendResponse();
 	}
 
@@ -94,7 +96,7 @@ class getBookmarkLessons {
 
 
 		if ($lessonPrivacy == "PRIVATE") {
-			$stmt2 = $con->prepare("SELECT lesson_name,imageURL FROM bkmk_private_lessons WHERE bookmarkID = :bookmarkID");
+			$stmt2 = $con->prepare("SELECT lesson_name FROM bkmk_private_lessons WHERE bookmarkID = :bookmarkID");
 			$stmt2->bindParam(':bookmarkID',$bookmarkID);
 			$stmt2->execute();
 			while ($result2 = $stmt2->fetch(PDO::FETCH_ASSOC)) {
@@ -158,9 +160,25 @@ class getBookmarkLessons {
 		}
 	}
 
-	public function sendResponse($allLessons) {
+	public function getLessonTags() {
+		$lessonNames = array_column($this->masterLessons,'lesson_name');
+		$con = $this->getConnection();
+		$stmt = $con->prepare("SELECT lesson,tag FROM tags_attached WHERE lesson = :lesson");
+		$stmt->bindParam(':lesson',$lessonName);
+		foreach($lessonNames as $lessonName) {
+			$stmt->execute();
+			while($result = $stmt->fetch(PDO::FETCH_ASSOC)) {
+				$this->masterTags[] = $result;
+			}
+		}
+	}
+
+	public function sendResponse() {
 		header('Content Type:text/plain;charset=utf:8');
-		echo json_encode($this->masterLessons);
+		$master = [];
+		$master["lessons"] = $this->masterLessons;
+		$master["tags"] = $this->masterTags;
+		echo json_encode($master);
 	}
 
 }

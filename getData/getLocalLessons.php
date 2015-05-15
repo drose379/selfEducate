@@ -9,8 +9,8 @@ class getLocalLessons {
 		$subject = $post["subject"];
 
 		$localLessons = $this->getLocalLessons($subject);
-		$objectives = $this->getObjectives($localLessons);
-		$this->sendResponse($localLessons,$objectives);
+		$tags = $this->getLessonTags($localLessons);
+		$this->sendResponse($localLessons,$tags);
 	}
 
 	public function getConnection() {
@@ -22,36 +22,35 @@ class getLocalLessons {
 		$localLessons = [];
 
 		$con = $this->getConnection();
-		$stmt = $con->prepare("SELECT lesson_name,imageURL FROM lesson WHERE subject = :subject");
+		$stmt = $con->prepare("SELECT lesson_name FROM lesson WHERE subject = :subject");
 		$stmt->bindParam(':subject',$subject);
 		$stmt->execute();
 		while ($result = $stmt->fetch(PDO::FETCH_ASSOC)) {
-			$localLessons[] = $result;
+			$localLessons[] = $result;		
 		}
-				
+		$localLessons = array_column($localLessons,'lesson_name');		
 		return $localLessons;
 	} 
 
-	public function getObjectives($lessons) {
-		$objectives = [];
+	public function getLessonTags($localLessons) {
+		$tags = [];
 		$con = $this->getConnection();
-		foreach ($lessons as $lesson) {
-			$lessonName = $lesson["lesson_name"];
-			$stmt = $con->prepare("SELECT lesson,objective FROM lesson_objectives WHERE lesson = :lesson LIMIT 1");
-			$stmt->bindParam(':lesson',$lessonName);
+		$stmt = $con->prepare("SELECT lesson,tag FROM tags_attached WHERE lesson = :lesson");
+		$stmt->bindParam(':lesson',$lessonName);
+		foreach ($localLessons as $lessonName) {
+			
 			$stmt->execute();
-			while($result = $stmt->fetch(PDO::FETCH_ASSOC)) {
-				$objectives[] = $result;
+			while ($result = $stmt->fetch(PDO::FETCH_ASSOC)) {
+				$tags[] = $result;
 			}
 		}
-		return $objectives;
+		return $tags;
 	}
 
-
-	public function sendResponse(array $localLessons,$objectives) {
+	public function sendResponse(array $localLessons,$tags) {
 		$master = [];
 		$master["lessonInfo"] = $localLessons;
-		$master["objectives"] = $objectives;
+		$master["tags"] = $tags;
 		header('Content Type:text/plain;charset=utf:8');
 		echo json_encode($master);
 	}
