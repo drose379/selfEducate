@@ -2,6 +2,7 @@
 
 class newBookmarkLesson {
 	public function run() {
+		file_put_contents("newBookmarkL.txt","BookmarkLesson called");
 		$post = file_get_contents("php://input");
 		$post = json_decode($post,true);
 
@@ -39,7 +40,6 @@ class newBookmarkLesson {
 			* If private, insert into bkmk_private_lessons
 			* If public, insert into lesson GIVE BOOKMARK_ID BECAUSE USER WANTS THEIR LESSONS PUBLIC BUT IS NOT SUBSCRIBED TO OTHER PUBLIC LESSONS
 		*/
-			file_put_contents("unSubCalled.txt",$lesson_privacy);
 		if ($lesson_privacy == "PRIVATE") {
 			$stmt = $con->prepare("INSERT INTO bkmk_private_lessons (subject,lesson_name,bookmarkID) VALUES (:bookmark,:lesson,:bookmarkID)");
 			$stmt->bindParam(':bookmark',$bookmark);
@@ -71,7 +71,7 @@ class newBookmarkLesson {
 			$stmt->execute();
 		} else if ($lesson_privacy == "PUBLIC") {
 			//issue inserting lesson here, need to insert imageURL but not bookmarkID (null). Find way to skip over bookmarkID here
-			$stmt2 = $con->prepare("INSERT INTO lesson (subject,lesson_name,bookmarkID) VALUES (:bookmark,:lesson)");
+			$stmt2 = $con->prepare("INSERT INTO lesson (subject,lesson_name) VALUES (:bookmark,:lesson)");
 			$stmt2->bindParam(':bookmark',$bookmark);
 			$stmt2->bindParam(':lesson',$lesson);
 			$stmt2->execute();

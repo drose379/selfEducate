@@ -6,26 +6,22 @@ class getBookmarks {
 		$post = json_decode($post,true);
 		$owner_id = $post["owner_id"];
 		
-		$categories = $this->getCategories();
+		/*
+			* Need to run getBookmarks first
+			* Pass the returned array to the getCategories method
+			* Use array_column() to get just the categories from the array
+			* Pull the categories from the DB that the bookmarked subjects contain, avoiding any confusin back in the java code
+		*/
+
 		$bookmarks = $this->getBookmarks($owner_id);
+		$categories = $this->getCategories($bookmarks);
+		
 		$this->sendResponse($categories,$bookmarks);
 	}
 
 	public function getConnection() {
 		$connection = new PDO ('mysql:host=localhost;dbname=codeyour_self_educate','codeyour','dar150267');
 		return $connection;
-	}
-
-
-	public function getCategories() {
-		$allCategories = [];
-		$con = $this->getConnection();
-		$stmt = $con->prepare("SELECT category,description FROM subject_category");
-		$stmt->execute();
-		while ($result = $stmt->fetch(PDO::FETCH_ASSOC)) {
-			$allCategories[] = $result;
-		}
-		return $allCategories;
 	}
 
 	public function getBookmarks($ownerID) {
@@ -39,6 +35,23 @@ class getBookmarks {
 		}
 		return $bookmarks;
 	}
+
+
+	public function getCategories($bookmarks) {
+		$cats = array_column($bookmarks,"category");
+		$allCategories = [];
+		$con = $this->getConnection();
+		$stmt = $con->prepare("SELECT category,description FROM subject_category WHERE category = :category");
+		$stmt->bindParam(':category',$cat);
+		foreach ($cats as $cat) {
+			$stmt->execute();
+			while ($result = $stmt->fetch(PDO::FETCH_ASSOC)) {
+				$allCategories[] = $result;
+			}
+		}
+		return $allCategories;
+	}
+
 
 	public function sendResponse($categories,$bookmarkInfo) {
 		$masterArray = [];

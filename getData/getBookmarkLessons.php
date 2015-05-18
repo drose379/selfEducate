@@ -176,7 +176,7 @@ class getBookmarkLessons {
 	public function sendResponse() {
 		header('Content Type:text/plain;charset=utf:8');
 		$master = [];
-		$master["lessons"] = $this->masterLessons;
+		$master["lessons"] = array_column($this->masterLessons,'lesson_name');
 		$master["tags"] = $this->masterTags;
 		echo json_encode($master);
 	}
