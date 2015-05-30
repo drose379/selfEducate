@@ -11,7 +11,7 @@ class getTags {
 	}
 
 	public function getConnection() {
-		$connection = new PDO ('mysql:host=localhost;dbname=codeyour_self_educate','root','HwAlJAgstN');
+		$connection = new PDO ('mysql:host=localhost;dbname=self_educate','root','HwAlJAgstN');
 		return $connection;
 	}
 
