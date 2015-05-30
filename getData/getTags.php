@@ -6,8 +6,11 @@ class getTags {
 	private $tagsArray;
 
 	public function run() {
+		/*
 		$this->getTags();
 		$this->sendResponse();
+		*/
+		echo "Testing!";
 	}
 
 	public function getConnection() {
