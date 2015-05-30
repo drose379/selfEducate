@@ -6,14 +6,12 @@ class getTags {
 	private $tagsArray;
 
 	public function run() {
-		/*
+		
 		$this->getTags();
 		$this->sendResponse();
-		*/
-		echo "Testing!";
 	}
 
-	/*
+	
 	public function getConnection() {
 		$connection = new PDO ('mysql:host=localhost;dbname=self_educate','root','HwAlJAgstN');
 		return $connection;
@@ -34,5 +32,5 @@ class getTags {
 		header('Content Type:text/plain;charset=utf:8');
 		echo json_encode($this->tagsArray);
 	}
-	*/
+	
 }
