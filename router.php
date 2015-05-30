@@ -62,7 +62,7 @@ public function loadRoutes() {
     */
 
     $this->routes = [
-        "getTags" => [new getTags,"run"]
+        "/getTags" => [new getTags,"run"]
     ];
 }
   
