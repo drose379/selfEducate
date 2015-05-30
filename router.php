@@ -1,8 +1,9 @@
 <?php
 
-require 'getData/getLocalSubs.php';
-require 'removeData/subDeleter.php';
+//require 'getData/getLocalSubs.php';
+//require 'removeData/subDeleter.php';
 require 'getData/getTags.php';
+/*
 require 'getData/getPubSubjectNames1.php';
 require 'getData/getPubSubFull1.php';
 require 'getData/getBookmarks.php';
@@ -21,7 +22,7 @@ require 'setData/hideSubject.php';
 require 'setData/newCategory.php';
 require 'setData/newBookmarkLesson.php';
 require 'setData/setLessonImage.php';
-
+*/
 
 class router {
     
