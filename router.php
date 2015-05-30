@@ -35,6 +35,7 @@ public function __construct() {
     
 
 public function loadRoutes() {
+    /*
   $this->routes = [
     "/newSubject" => [new subCreater,"run"],
     "/deleteSubject" => [new subDeleter,"run"],
@@ -58,6 +59,11 @@ public function loadRoutes() {
     "/setDefaultImage" => [new lessonImage,"run"],
     "/getImageFromURL" => [new grabImage,"run"]
     ];
+    */
+
+    $this->routes = [
+        "getTags" => [new getTags,"run"]
+    ]
 }
   
 public function match($path) {
