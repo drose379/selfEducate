@@ -3,7 +3,7 @@
 //require 'getData/getLocalSubs.php';
 //require 'removeData/subDeleter.php';
 require 'getData/getTags.php';
-require 'setData/albumDefaultsInsert.php';
+require 'setData/albumDefaultInsert.php';
 /*
 require 'getData/getPubSubjectNames1.php';
 require 'getData/getPubSubFull1.php';
