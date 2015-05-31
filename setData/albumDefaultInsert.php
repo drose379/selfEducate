@@ -2,6 +2,9 @@
 
 class albumDefault {
 	public function run() {
+
+		echo "Called";
+
 		$imageTempName = $_FILES["photo"]["tmp_name"];
 		$imageRealName = $_FILES["photo"]["name"];
 
@@ -14,5 +17,6 @@ class albumDefault {
 		$path = "/var/www/selfEducate/albumDefaults/" . $imageRealName;
 
 		file_put_contents($imageRealName,$imageFile);
+
 	}
 }
