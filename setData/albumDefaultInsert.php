@@ -8,7 +8,7 @@ class albumDefault {
 		$imageTempName = $_FILES["photo"]["tmp_name"];
 		$imageRealName = $_FILES["photo"]["name"];
 
-		var_dump($_POST);
+		var_dump($_FILES);
 
 		//get image resource from temp location
 		$imageResource = imagecreatefromjpeg($imageTempName);
@@ -18,7 +18,7 @@ class albumDefault {
 
 		$path = "/var/www/selfEducate/albumDefaults/" . $imageRealName;
 
-		file_put_contents($imageRealName,$imageFile);
+		file_put_contents($imageRealName,$path);
 
 	}
 }
