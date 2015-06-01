@@ -13,12 +13,10 @@ class albumDefault {
 		//get image resource from temp location
 		$imageResource = imagecreatefromjpeg($imageTempName);
 
-		//create file
-		$imageFile = imagejpeg($imageResource);
-
 		$path = "/var/www/selfEducate/albumDefaults/" . $imageRealName;
 
-		file_put_contents($imageRealName,$path);
+		//create/add file
+		$imageFile = imagejpeg($imageResource,$path);
 
 	}
 }
