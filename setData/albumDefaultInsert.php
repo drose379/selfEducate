@@ -8,7 +8,7 @@ class albumDefault {
 		$imageTempName = $_FILES["photo"]["tmp_name"];
 		$imageRealName = $_FILES["photo"]["name"];
 
-		var_dump($_POST);
+		var_dump($_FILES);
 
 		//get image resource from temp location
 		$imageResource = imagecreatefromjpeg($imageTempName);
