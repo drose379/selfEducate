@@ -13,7 +13,9 @@ class albumDefault {
 		//get image resource from temp location
 		$imageResource = imagecreatefromjpeg($imageTempName);
 
-		$path = "/var/www/selfEducate/albumDefaults/" . $imageRealName;
+		$randomName = md5($imageRealName).".jpg";
+
+		$path = "/var/www/selfEducate/albumDefaults/" . $randomName;
 
 		//create/add file
 		$imageFile = imagejpeg($imageResource,$path);
