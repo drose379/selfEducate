@@ -20,5 +20,7 @@ class albumDefault {
 		//create/add file
 		$imageFile = imagejpeg($imageResource,$path);
 
+		echo $randomName;
+
 	}
 }
