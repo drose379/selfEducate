@@ -1,5 +1,6 @@
 <?php
 
+
 require 'connect.php';
 
 class newAlbum {
@@ -23,3 +24,5 @@ class newAlbum {
 			echo "Connection is not null!";
 		}
 	}
+
+}
