@@ -15,8 +15,8 @@ class newAlbum {
 
 	public function run() {
 		$post = file_get_contents("php://input");
-		var_dump($post);
-		/*
+		$post = json_decode($post,true);
+
 		$this->subject = $post["subject"];
 		$this->lesson = $post["lesson"];
 		$this->imageLocation = $post["imageLocation"];
@@ -24,13 +24,18 @@ class newAlbum {
 		$this->albumDesc = $post["albumDesc"];
 
 		$this->addLessonAlbum();
-		*/
+		
 	}
 
 	public function addLessonAlbum() {
 		$connection = Connection::get();
 		$stmt = $connection->prepare("INSERT INTO lesson_albums (subject,lesson,album,default_photo,description) VALUES 
 			(:subject,:lesson,:albumName,:defaultPhoto,:description)");
+		$stmt->bindParam(':subject',$this->subject);
+		$stmt->bindParam(':lesson',$this->lesson);
+		$stmt->bindParam(':album',$this->albumName);
+		$stmt->bindParam(':defaultPhoto',$this->imageLocation);
+		$stmt->bindParam(':description',$this->albumDesc);
 	}
 
 }
