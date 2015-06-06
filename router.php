@@ -4,6 +4,7 @@
 //require 'removeData/subDeleter.php';
 require 'getData/getTags.php';
 require 'setData/albumDefaultInsert.php';
+require 'setData/newAlbumEntry.php';
 /*
 require 'getData/getPubSubjectNames1.php';
 require 'getData/getPubSubFull1.php';
@@ -64,7 +65,8 @@ public function loadRoutes() {
 
     $this->routes = [
         "/getTags" => [new getTags,"run"],
-        "/albumDefInsert" => [new albumDefault,"run"]
+        "/albumDefInsert" => [new albumDefault,"run"],
+        "/newAlbum" => [new newAlbum,"run"]
     ];
 }
   
