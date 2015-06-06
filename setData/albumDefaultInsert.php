@@ -3,8 +3,6 @@
 class albumDefault {
 	public function run() {
 
-		echo "Called";
-
 		$imageTempName = $_FILES["photo"]["tmp_name"];
 		$imageRealName = $_FILES["photo"]["name"];
 
