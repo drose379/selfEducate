@@ -33,7 +33,7 @@ class newAlbum {
 			(:subject,:lesson,:albumName,:defaultPhoto,:description)");
 		$stmt->bindParam(':subject',$this->subject);
 		$stmt->bindParam(':lesson',$this->lesson);
-		$stmt->bindParam(':album',$this->albumName);
+		$stmt->bindParam(':albumName',$this->albumName);
 		$stmt->bindParam(':defaultPhoto',$this->imageLocation);
 		$stmt->bindParam(':description',$this->albumDesc);
 		$stmt->execute();
