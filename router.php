@@ -3,6 +3,7 @@
 //require 'getData/getLocalSubs.php';
 //require 'removeData/subDeleter.php';
 require 'getData/getTags.php';
+require 'getData/checkLessonItems.php';
 require 'setData/albumDefaultInsert.php';
 require 'setData/newAlbumEntry.php';
 /*
@@ -66,7 +67,8 @@ public function loadRoutes() {
     $this->routes = [
         "/getTags" => [new getTags,"run"],
         "/albumDefInsert" => [new albumDefault,"run"],
-        "/newAlbum" => [new newAlbum,"run"]
+        "/newAlbum" => [new newAlbum,"run"],
+        "/checkLessonItems" => [new checkLessonItems,"run"]
     ];
 }
   
