@@ -29,13 +29,13 @@ class newAlbum {
 
 	public function addLessonAlbum() {
 		$connection = Connection::get();
-		$stmt = $connection->prepare("INSERT INTO lesson_albums (subject,lesson,album,default_photo,description) VALUES 
-			(:subject,:lesson,:albumName,:defaultPhoto,:description)");
+		$stmt = $connection->prepare("INSERT INTO lesson_albums (subject,lesson,albumName,description,default_photo) VALUES 
+			(:subject,:lesson,:albumName,:description,:default_photo)");
 		$stmt->bindParam(':subject',$this->subject);
 		$stmt->bindParam(':lesson',$this->lesson);
 		$stmt->bindParam(':albumName',$this->albumName);
-		$stmt->bindParam(':defaultPhoto',$this->imageLocation);
 		$stmt->bindParam(':description',$this->albumDesc);
+		$stmt->bindParam(':default_photo',$this->imageLocation);
 		$stmt->execute();
 	}
 
