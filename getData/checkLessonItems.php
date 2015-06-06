@@ -1,6 +1,6 @@
 <?php
 
-require 'connection.php';
+require 'connect.php';
 
 class checkLessonItems {
 
