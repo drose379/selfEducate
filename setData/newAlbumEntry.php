@@ -36,6 +36,7 @@ class newAlbum {
 		$stmt->bindParam(':album',$this->albumName);
 		$stmt->bindParam(':defaultPhoto',$this->imageLocation);
 		$stmt->bindParam(':description',$this->albumDesc);
+		$stmt->execute();
 	}
 
 }
