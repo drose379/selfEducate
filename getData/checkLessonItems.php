@@ -25,7 +25,7 @@ class checkLessonItems {
 	public function hasAlbums($subject,$lesson) {
 		$connection = Connection::get();
 	
-		$stmt = $connection->prepare("SELECT COUNT(*) lesson_albums WHERE subject = :subject AND lesson = :lesson");
+		$stmt = $connection->prepare("SELECT COUNT(*) FROM lesson_albums WHERE subject = :subject AND lesson = :lesson LIMIT 1");
 		$stmt->bindParam(':subject',$subject);
 		$stmt->bindParam(':lesson',$lesson);
 		$stmt->execute();
