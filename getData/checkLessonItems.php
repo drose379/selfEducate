@@ -31,7 +31,7 @@ class checkLessonItems {
 		$stmt->execute();
 		$itemCount = $stmt->fetchAll();
 		
-		echo json_encode($itemCount[0][0]);
+		echo $itemCount[0][0];
 		//get numrows of result, if not 0, add item to foundItems array
 	}
 }
