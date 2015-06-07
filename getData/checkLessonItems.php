@@ -31,7 +31,7 @@ class checkLessonItems {
 		$stmt->execute();
 		$itemCount = $stmt->fetchAll();
 		*/
-		echo $subject . $lesson;
+		echo "Testing 123";
 		//get numrows of result, if not 0, add item to foundItems array
 	}
 }
