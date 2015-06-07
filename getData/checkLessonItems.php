@@ -29,9 +29,9 @@ class checkLessonItems {
 		$stmt->bindParam(':subject',$subject);
 		$stmt->bindParam(':lesson',$lesson);
 		$stmt->execute();
-		$itemCount = $stmt->fetchAll();
+		$itemCount = $stmt->fetchColumn();
 		
-		echo json_encode($itemCount);
+		echo $itemCount;
 		//get numrows of result, if not 0, add item to foundItems array
 	}
 }
