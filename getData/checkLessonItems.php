@@ -29,7 +29,7 @@ class checkLessonItems {
 		$stmt->bindParam(':subject',$subject);
 		$stmt->bindParam(':lesson',$lesson);
 		$stmt->execute();
-		$itemCount = json_encode($stmt->fetchColumn());
+		$itemCount = $stmt->fetchColumn();
 		
 		echo $itemCount;
 		//get numrows of result, if not 0, add item to foundItems array
