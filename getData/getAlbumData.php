@@ -12,7 +12,7 @@ class getAlbumData {
 
 		$data = $this->getAlbumData($subject,$lesson);
 
-		return json_encode($data);
+		echo json_encode($data);
 	}
 
 	public function getAlbumData($subject,$lesson) {
