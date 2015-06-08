@@ -34,12 +34,14 @@ class checkLessonItems {
 		$itemCount = $stmt->fetchAll();
 		
 		$exists = $itemCount[0][0];
-		echo $exists;
-		/*
+		
 		if ($exists > 1) {
-			$this->foundItems[] = "photoAlbum";
+			echo "Working!";
+			//$this->foundItems[] = "photoAlbum";
+		} else {
+			echo "Not working";
 		}
-		*/
+		
 	}
 
 	/*
