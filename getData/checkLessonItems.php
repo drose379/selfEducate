@@ -21,7 +21,7 @@ class checkLessonItems {
 		$this->hasAlbums($subject,$lesson);
 		//etc
 
-		echo json_encode($this->foundItems);
+		//echo json_encode($this->foundItems);
 	}
 
 	public function hasAlbums($subject,$lesson) {
@@ -34,9 +34,12 @@ class checkLessonItems {
 		$itemCount = $stmt->fetchAll();
 		
 		$exists = $itemCount[0][0];
+		echo $exists;
+		/*
 		if ($exists > 1) {
 			$this->foundItems[] = "photoAlbum";
 		}
+		*/
 	}
 
 	/*
