@@ -35,7 +35,7 @@ class checkLessonItems {
 		if ($exists > 1) {
 			$foundItems[] = "photoAlbum";
 		}
-		return $foundItems
+		return $foundItems;
 	}
 
 	/*
