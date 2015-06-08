@@ -20,6 +20,8 @@ class checkLessonItems {
 		//if lesson has at least one of item, add column name to an array,echo array back to application
 		$this->hasAlbums($subject,$lesson);
 		//etc
+
+		echo json_encode($foundItems);
 	}
 
 	public function hasAlbums($subject,$lesson) {
@@ -31,7 +33,15 @@ class checkLessonItems {
 		$stmt->execute();
 		$itemCount = $stmt->fetchAll();
 		
-		echo $itemCount[0][0];
-		//get numrows of result, if not 0, add item to foundItems array
+		$exists = $itemCount[0][0];
+		if ($exists > 1) {
+			$this->foundItems[] = "photoAlbum";
+		}
 	}
+
+	/*
+	public function hasAudio($subject,$lesson) {
+
+	}
+	*/
 }
