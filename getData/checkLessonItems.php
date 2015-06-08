@@ -21,7 +21,7 @@ class checkLessonItems {
 		$this->hasAlbums($subject,$lesson);
 		//etc
 
-		echo json_encode($foundItems);
+		echo json_encode($this->foundItems);
 	}
 
 	public function hasAlbums($subject,$lesson) {
