@@ -10,12 +10,12 @@ class getAlbumData {
 		$subject = $post["subject"];
 		$lesson = $post["lesson"];
 
-		$data = $this->getAlbumData($subject,$lesson);
+		$data = $this->getData($subject,$lesson);
 
 		echo json_encode($data);
 	}
 
-	public function getAlbumData($subject,$lesson) {
+	public function getData($subject,$lesson) {
 		$albumData = [];
 
 		$connection = Connection::get();
