@@ -4,6 +4,7 @@
 //require 'removeData/subDeleter.php';
 require 'getData/getTags.php';
 require 'getData/checkLessonItems.php';
+require 'getData/getAlbumData.php';
 require 'setData/albumDefaultInsert.php';
 require 'setData/newAlbumEntry.php';
 /*
@@ -68,7 +69,8 @@ public function loadRoutes() {
         "/getTags" => [new getTags,"run"],
         "/albumDefInsert" => [new albumDefault,"run"],
         "/newAlbum" => [new newAlbum,"run"],
-        "/checkLessonItems" => [new checkLessonItems,"run"]
+        "/checkLessonItems" => [new checkLessonItems,"run"],
+        "/getAlbumData" => [new getAlbumData,"run"]
     ];
 }
   
