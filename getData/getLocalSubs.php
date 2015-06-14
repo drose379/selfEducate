@@ -4,20 +4,19 @@ require_once 'connect.php';
 
 class getLocalSubs {
 
-	private $connection = Connection::get();
-
 	public function run() {
 		$post = file_get_contents("php://input");
 		$post = json_decode($post,true);
 		$owner_id = $post["owner_id"];
-		$categories = $this->getCategories();
-		$subjectInfo = $this->getSubjectInfo($owner_id);
+		$connection = Connection::get();
+		$categories = $this->getCategories($connection);
+		$subjectInfo = $this->getSubjectInfo($owner_id,$connection);
 		$this->sendResponse($categories,$subjectInfo);
 	}
 
-	public function getCategories() {
+	public function getCategories($connection) {
 		$allCategories = [];
-		$stmt = $this->conection->prepare("SELECT category,description FROM subject_category");
+		$stmt = $conection->prepare("SELECT category,description FROM subject_category");
 		$stmt->execute();
 		while ($result = $stmt->fetch(PDO::FETCH_ASSOC)) {
 			$allCategories[] = $result;
@@ -29,9 +28,9 @@ class getLocalSubs {
 
 	//getSubjectInfo
 
-	public function getSubjectInfo($owner_id) {
+	public function getSubjectInfo($owner_id,$connection) {
 		$master = [];
-		$stmt = $this->connection->prepare("SELECT name,category FROM subject WHERE owner_id = :owner_id"); //add where owner_id = :owner_id
+		$stmt = $connection->prepare("SELECT name,category FROM subject WHERE owner_id = :owner_id"); //add where owner_id = :owner_id
 		$stmt->bindParam(':owner_id',$owner_id);
 		$stmt->execute();
 		while ($result = $stmt->fetch(PDO::FETCH_ASSOC)) {
