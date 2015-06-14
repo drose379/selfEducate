@@ -1,6 +1,10 @@
 <?php
 
+require 'connect.php';
+
 class getLocalSubs {
+
+	private $connection = Connection::get();
 
 	public function run() {
 		$post = file_get_contents("php://input");
@@ -11,17 +15,9 @@ class getLocalSubs {
 		$this->sendResponse($categories,$subjectInfo);
 	}
 
-	public function getConnection() {
-		$connection = new PDO ('mysql:host=localhost;dbname=codeyour_self_educate','codeyour','dar150267');
-		return $connection;
-	}
-
-	//getCategories
-
 	public function getCategories() {
 		$allCategories = [];
-		$con = $this->getConnection();
-		$stmt = $con->prepare("SELECT category,description FROM subject_category");
+		$stmt = $this->conection->prepare("SELECT category,description FROM subject_category");
 		$stmt->execute();
 		while ($result = $stmt->fetch(PDO::FETCH_ASSOC)) {
 			$allCategories[] = $result;
@@ -35,8 +31,7 @@ class getLocalSubs {
 
 	public function getSubjectInfo($owner_id) {
 		$master = [];
-		$con = $this->getConnection();
-		$stmt = $con->prepare("SELECT name,category FROM subject WHERE owner_id = :owner_id"); //add where owner_id = :owner_id
+		$stmt = $this->connection->prepare("SELECT name,category FROM subject WHERE owner_id = :owner_id"); //add where owner_id = :owner_id
 		$stmt->bindParam(':owner_id',$owner_id);
 		$stmt->execute();
 		while ($result = $stmt->fetch(PDO::FETCH_ASSOC)) {
