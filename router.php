@@ -5,6 +5,8 @@
 require 'getData/getTags.php';
 require 'getData/checkLessonItems.php';
 require 'getData/getAlbumData.php';
+require 'getData/getLocalSubs.php';
+
 require 'setData/albumDefaultInsert.php';
 require 'setData/newAlbumEntry.php';
 /*
@@ -70,7 +72,8 @@ public function loadRoutes() {
         "/albumDefInsert" => [new albumDefault,"run"],
         "/newAlbum" => [new newAlbum,"run"],
         "/checkLessonItems" => [new checkLessonItems,"run"],
-        "/getAlbumData" => [new getAlbumData,"run"]
+        "/getAlbumData" => [new getAlbumData,"run"],
+        "/getLocalSubs" => [new getLocalSubs,"run"]
     ];
 }
   
