@@ -16,7 +16,7 @@ class getLocalSubs {
 
 	public function getCategories($connection) {
 		$allCategories = [];
-		$stmt = $conection->prepare("SELECT category,description FROM subject_category");
+		$stmt = $connection->prepare("SELECT category,description FROM subject_category");
 		$stmt->execute();
 		while ($result = $stmt->fetch(PDO::FETCH_ASSOC)) {
 			$allCategories[] = $result;
