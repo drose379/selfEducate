@@ -7,7 +7,7 @@ class getLocalSubs {
 	public function run() {
 		$post = file_get_contents("php://input");
 		$post = json_decode($post,true);
-		$owner_id = $post["owner_id"];
+		$owner_id = $post[0];
 		$connection = Connection::get();
 		$categories = $this->getCategories($connection);
 		$subjectInfo = $this->getSubjectInfo($owner_id,$connection);
