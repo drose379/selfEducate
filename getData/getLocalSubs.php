@@ -9,24 +9,12 @@ class getLocalSubs {
 		$post = json_decode($post,true);
 		$owner_id = $post[0];
 		$connection = Connection::get();
-		$categories = $this->getCategories($connection);
 		$subjectInfo = $this->getSubjectInfo($owner_id,$connection);
+		$categories = $this->getCategories($connection,$subjectInfo);
 		$this->sendResponse($categories,$subjectInfo);
 	}
 
-	public function getCategories($connection) {
-		$allCategories = [];
-		$stmt = $connection->prepare("SELECT category,description FROM subject_category");
-		$stmt->execute();
-		while ($result = $stmt->fetch(PDO::FETCH_ASSOC)) {
-			$allCategories[] = $result;
-		}
-		return $allCategories;
-	}
-
-
-
-	//getSubjectInfo
+//getSubjectInfo
 
 	public function getSubjectInfo($owner_id,$connection) {
 		$master = [];
@@ -37,6 +25,20 @@ class getLocalSubs {
 			$master[] = $result;
 		}
 		return $master;
+	}
+
+	public function getCategories($connection,$subjectInfo) {
+		$allCategories = [];
+		$stmt = $connection->prepare("SELECT category,description FROM subject_category WHERE category = :category");
+		foreach($subjectInfo as $subject) {
+			$stmt->bindParam(':category',$subject["category"]);
+			$stmt->execute();
+		}
+		
+		while ($result = $stmt->fetch(PDO::FETCH_ASSOC)) {
+			$allCategories[] = $result;
+		}
+		return $allCategories;
 	}
 
 	public function sendResponse($categories,$subjectInfo) {
