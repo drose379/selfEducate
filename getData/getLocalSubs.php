@@ -33,10 +33,9 @@ class getLocalSubs {
 		foreach($subjectInfo as $subject) {
 			$stmt->bindParam(':category',$subject["category"]);
 			$stmt->execute();
-		}
-		
-		while ($result = $stmt->fetch(PDO::FETCH_ASSOC)) {
+			while ($result = $stmt->fetch(PDO::FETCH_ASSOC)) {
 			$allCategories[] = $result;
+			}
 		}
 		return $allCategories;
 	}
