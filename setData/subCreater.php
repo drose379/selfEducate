@@ -1,6 +1,6 @@
 <?php
 
-require 'connect.php';
+require_once 'connect.php';
 
 class subCreater {
 
@@ -12,7 +12,7 @@ public function run() {
 	$ownerID = $post[1];
 	$subject = $post[2];
 	$privacy = $post[3];
-	
+
 	$date = date('F j, Y');
 	$this->insert($subject,$ownerID,$date,$privacy,$category);
 }
