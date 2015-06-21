@@ -11,7 +11,8 @@ class getLocalSubs {
 		$connection = Connection::get();
 		$subjectInfo = $this->getSubjectInfo($owner_id,$connection);
 		$categories = $this->getCategories($connection,$subjectInfo);
-		$this->sendResponse($categories,$subjectInfo);
+		$allCategories = $this->grabAllCategories($connection);
+		$this->sendResponse($allCategories,$categories,$subjectInfo);
 	}
 
 //getSubjectInfo
@@ -40,9 +41,20 @@ class getLocalSubs {
 		return $allCategories;
 	}
 
-	public function sendResponse($categories,$subjectInfo) {
+	public function grabAllCategories($connection) {
+		$cats = [];
+		$stmt = $connection->prepare("SELECT category FROM subject_category");
+		$stmt->execute();
+		while ($result = $stmt->fetch(PDO::FETCH_ASSOC)) {
+			$cats[] = $result;
+		}
+		return $cats;
+	}
+
+	public function sendResponse($allCategories,$categories,$subjectInfo) {
 		$masterArray = [];
 		header('Content Type:text/plain;charset=utf:8');
+		$masterArray["allCategories"] = $allCategories;
 		$masterArray["categories"] = $categories;
 		$masterArray["fullSubInfo"] = $subjectInfo;
 		echo json_encode($masterArray);
