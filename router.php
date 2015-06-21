@@ -10,6 +10,7 @@ require 'getData/getLocalSubs.php';
 require 'setData/albumDefaultInsert.php';
 require 'setData/newAlbumEntry.php';
 require 'setData/subCreater.php';
+require 'setData/newCategory.php'; 
 /*
 require 'getData/getPubSubjectNames1.php';
 require 'getData/getPubSubFull1.php';
@@ -75,7 +76,8 @@ public function loadRoutes() {
         "/checkLessonItems" => [new checkLessonItems,"run"],
         "/getAlbumData" => [new getAlbumData,"run"],
         "/getLocalSubs" => [new getLocalSubs,"run"],
-        "/newSubject" => [new subCreater,"run"]
+        "/newSubject" => [new subCreater,"run"],
+        "/newCategory" => [new newCategory,"run"]
     ];
 }
   

@@ -1,23 +1,20 @@
 <?php
 
+require 'connect.php';
+
 class newCategory {
 	public function run() {
 		$post = file_get_contents("php://input");
 		$post = json_decode($post,true);
 
-		$catName = $post["catName"];
-		$catDesc = $post["catDesc"];
+		$catName = $post[0];
+		$catDesc = $post[1];
 
 		$this->insertCategory($catName,$catDesc);
 	}
 
-	public function getConnection() {
-		$connection = new PDO ('mysql:host=localhost;dbname=codeyour_self_educate','codeyour','dar150267');
-		return $connection;
-	}
-
 	public function insertCategory($name,$description) {
-		$con = $this->getConnection();
+		$con = Connection::get();
 		$stmt = $con->prepare("INSERT INTO subject_category (category,description) VALUES (:name,:description)");
 		$stmt->bindParam(':name',$name);
 		$stmt->bindParam(':description',$description);
